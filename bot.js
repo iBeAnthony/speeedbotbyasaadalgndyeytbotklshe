@@ -1579,5 +1579,18 @@ client.on('message', msg => {
 client.on('ready', () => { //code bot not leave room voice //Bot Is Online
     client.channels.get("499212858710556682").join(); //by : iBeAnthonyD
     });
+client.on("message", message => {
+    var prefix = "$"
+    if (!message.content.startsWith(prefix)) return;
+      let command = message.content.split(" ")[0];
+      command = command.slice(prefix.length);
+        if(command === "mcskin") {
+                const args = message.content.split(" ").slice(1).join(" ")
+        if (!args) return message.channel.send("** اكتب اسم اسكنك **");
+        const image = new Discord.Attachment(`https://minotar.net/armor/body/${args}`, "skin.png");
+    message.channel.send(image)
+        }
+    });
+
 
 client.login(process.env.BOT_TOKEN);
