@@ -730,10 +730,10 @@ client.on('message',  msg => {
       if (!msg.mentions.members.first()) return msg.reply('منشن الشخص المحدد')
       if (!args[0]) return msg.reply('اكتب السبب')
       //غير اسم الروم او سوي روم بذا الاسم 
-      if (msg.guild.channels.find('name', 'warns')) {
+      if (msg.guild.channels.find('name', 'warns-log')) {
         //اذا غيرت فوق غير هنا كمان 
-        msg.guild.channels.find('name', 'warns').send(`
-      تم اعطائك انذار : ${msg.mentions.members.first()}
+        msg.guild.channels.find('name', 'warns-log').send(`
+      تم اعطاء انذار : ${msg.mentions.members.first()}
       بسبب
       ***${args.join(" ").split(msg.mentions.members.first()).slice(' ')}***
       `)
@@ -1593,6 +1593,61 @@ client.on("message", message => {
     message.channel.send(image)
         }
     });
+client.on('message', async message =>{
+  if (message.author.boss) return;
+	var prefix = "$";
+
+if (!message.content.startsWith(prefix)) return;
+	let command = message.content.split(" ")[0];
+	 command = command.slice(prefix.length);
+	let args = message.content.split(" ").slice(1);
+	if (command == "warn") {
+		if (!message.channel.guild) return;
+		if(!message.guild.roles.find(r => r.name === 'warns')); //code by iBeAnthonyD
+		if(!message.guild.roles.find(r => r.name === 'warns')); //code by iBeAnthonyD
+		let user = message.mentions.users.first();
+		if (message.mentions.users.size < 1) return message.reply('** يجب عليك المنشن اولاً **').then(msg => {msg.delete(5000)});
+		let reason = message.content.split(" ").slice(2).join(" ");
+		const muteembed = new Discord.RichEmbed()
+		.setColor("RANDOM")
+		.setAuthor(`Muted!`, user.displayAvatarURL)
+		.setThumbnail(user.displayAvatarURL)
+		.addField("**:busts_in_silhouette:  المستخدم**",  '**[ ' + `${user.tag}` + ' ]**',true)
+		.addField("**:hammer:  تم بواسطة **", '**[ ' + `${message.author.tag}` + ' ]**',true)
+		.addField("**:book:  السبب**", '**[ ' + `${reason}` + ' ]**',true)
+		.addField("User", user, true)
+		message.channel.send({embed : muteembed});
+		var muteembeddm = new Discord.RichEmbed()
+		.setAuthor(`Muted!`, user.displayAvatarURL)
+		.setDescription(`      
+${user} تم اعطائك تحذير
+${message.author.tag}  بواسطة
+[ ${reason} ] : السبب
+اتمنى ان لا يتكرر هذا الغلط مجددا
+`)
+		.setFooter(`في سيرفر : ${message.guild.name}`)
+		.setColor("RANDOM")
+	user.send( muteembeddm);
+  }
+ if(command === `unmute`) {
+  if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.sendMessage("**ليس لديك صلاحية لفك عن الشخص ميوت**:x: ").then(m => m.delete(5000));
+if(!message.guild.member(client.user).hasPermission("MANAGE_MESSAGES")) return message.reply("**ما عندي برمشن**").then(msg => msg.delete(6000))
+
+  let toMute = message.guild.member(message.mentions.users.first()) || message.guild.members.get(args[0]);
+  if(!toMute) return message.channel.sendMessage("**عليك المنشن أولاّ**:x: ");
+
+  let role = message.guild.roles.find (r => r.name === "Muted");
+  
+  if(!role || !toMute.roles.has(role.id)) return message.channel.sendMessage("**لم يتم اعطاء هذه شخص ميوت من الأساس**:x:")
+
+  await toMute.removeRole(role)
+  message.channel.sendMessage("**لقد تم فك الميوت عن شخص بنجاح**:white_check_mark:");
+
+  return;
+
+  }
+
+});
 
 
 client.login(process.env.BOT_TOKEN);
