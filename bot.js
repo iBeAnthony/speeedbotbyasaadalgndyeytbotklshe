@@ -455,15 +455,6 @@ client.on('messageUpdate', (message, newMessage) => {
 
 
 });
-client.on('message', message => {/// الفا كود | Emoko#0001
-     if (message.content === "$list") {
-         if(!message.channel.guild) return;
-     let embed = new Discord.RichEmbed()
-  .setColor("RANDOM") /// الفا كود | Emoko#0001
-  .addField("**سيرفرات يلي البوت موجود فيها: **" , client.guilds.size)
-  message.channel.sendEmbed(embed);
-    }/// الفا كود | Emoko#0001
-});
 client.on('ready', () => {
      client.user.setActivity("$help / $inv | By: iBeAnthonyD_",{type: 'WATCHING'});
 
